@@ -22,8 +22,10 @@ def array_of_vars(name, Ny, Nx):
 class SymbolicLinear(nn.Linear):
     def __init__(self,n_in,n_out):
         super(SymbolicLinear,self).__init__(n_in,n_out)
-
-
+        sym_weight = array_of_vars('w',n_in,n_out)
+        sym_bias   = array_of_vars('b',n_out,n_out)
+        self.sym_weight = sym_weight
+        self.sym_bias   = sym_bias
 
 
 
@@ -33,4 +35,6 @@ if __name__ == '__main__':
     fc = nn.Linear(3,1)
     sfc = SymbolicLinear(3,1)
 
+    y = fc(torch.ones(3))
+    y1 = sfc(torch.ones(3))
     qq = 0
