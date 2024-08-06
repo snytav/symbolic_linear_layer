@@ -25,7 +25,7 @@ class SymbolicLinear(nn.Linear):
     def __init__(self,n_in,n_out):
         super(SymbolicLinear,self).__init__(n_in,n_out)
         sym_weight = array_of_vars('w',n_in,n_out)
-        sym_bias   = array_of_vars('b',n_out,n_out)
+        sym_bias   = array_of_vars('b',n_in,n_out)
         self.sym_weight = sym_weight
         self.sym_bias   = sym_bias
 
@@ -33,6 +33,7 @@ class SymbolicLinear(nn.Linear):
         if len(args) >= 1:
             xx = args[0]
             expr = np.matmul(xx,self.sym_weight.T)
+            self.sym_bias = array_of_vars('b',expr.shape[0],expr.shape[1])
 
         if len(args) == 2:
             xx_vals = args[1]
@@ -51,7 +52,7 @@ class SymbolicLinear(nn.Linear):
                     sx[i] = s
 
 
-            return
+        return expr
 
 
 
