@@ -21,6 +21,14 @@ def array_of_vars(name, Nx, Ny):
     #xx = xx.reshape(xx.shape[0])
     return xx
 
+def make_symbolic_numpy_array_with_dimension_from_tensor(name,t):
+    a = np.array([[1, 2], [3, 4]])
+    a = np.linspace(0,1,3)
+    for (i, j), value in np.ndenumerate(a):
+        print(i, j, value)
+    # npa = np.zeros_like(t.numpy())
+    # for i,x in enum
+
 class SymbolicLinear(nn.Linear):
     def __init__(self,n_in,n_out):
         super(SymbolicLinear,self).__init__(n_in,n_out)
@@ -70,6 +78,9 @@ class SymbolicLinear(nn.Linear):
 
 
 if __name__ == '__main__':
+    make_symbolic_numpy_array_with_dimension_from_tensor('w',torch.ones(3))
+
+
     fc = nn.Linear(1,3)
     sfc = SymbolicLinear(1,3)
 
