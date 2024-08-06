@@ -3,7 +3,9 @@ import numpy as np
 import torch.nn as nn
 from sympy import *
 
-def array_of_vars(name, Ny, Nx):
+# Nx - horizontal
+# By - vertical
+def array_of_vars(name, Nx, Ny):
     xx = []
     for i in range(Ny):
         xline = []
@@ -27,14 +29,30 @@ class SymbolicLinear(nn.Linear):
         self.sym_weight = sym_weight
         self.sym_bias   = sym_bias
 
+    def symbolicEvaluate(self,xx):
+        fc1 = np.matmul(xx,self.sym_weight.T)
+
+        fc1 = fc1.squeeze()
+
+        return fc1
+
+
+
 
 
 
 
 if __name__ == '__main__':
-    fc = nn.Linear(3,1)
-    sfc = SymbolicLinear(3,1)
+    fc = nn.Linear(1,3)
+    sfc = SymbolicLinear(1,3)
 
-    y = fc(torch.ones(3))
-    y1 = sfc(torch.ones(3))
+    y = fc(torch.ones(1))
+    y1 = sfc(torch.ones(1))
+
+    xx = array_of_vars('x', 1, 1)
+
+    s = sfc.symbolicEvaluate(xx)
+
+
+
     qq = 0
