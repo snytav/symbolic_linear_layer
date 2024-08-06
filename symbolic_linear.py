@@ -29,8 +29,25 @@ class SymbolicLinear(nn.Linear):
         self.sym_weight = sym_weight
         self.sym_bias   = sym_bias
 
-    def symbolicEvaluate(self,xx):
-        fc1 = np.matmul(xx,self.sym_weight.T)
+    def symbolicEvaluate(self,*args):
+        if len(args) >= 1:
+            xx = args[0]
+            expr = np.matmul(xx,self.sym_weight.T)
+
+        if len(args) == 2:
+            xx_vals = args[1]
+
+
+            #substitute xx values
+            for sx in expr:
+                for i,s in enumerate(sx):
+                    for x,v in zip(xx,xx_vals):
+                        s = s.subs(x[0],v)
+                    sx[i] = s
+
+            return
+
+
 
         fc1 = fc1.squeeze()
 
@@ -51,7 +68,7 @@ if __name__ == '__main__':
 
     xx = array_of_vars('x', 1, 1)
 
-    s = sfc.symbolicEvaluate(xx)
+    s = sfc.symbolicEvaluate(xx,np.ones(1))
 
 
 
