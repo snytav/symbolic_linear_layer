@@ -43,7 +43,13 @@ class SymbolicLinear(nn.Linear):
                 for i,s in enumerate(sx):
                     for x,v in zip(xx,xx_vals):
                         s = s.subs(x[0],v)
+
+                    for w,wn in zip(self.sym_weight,self.weight):
+                        s = s.subs(w[0], wn)
+
+
                     sx[i] = s
+
 
             return
 
