@@ -21,19 +21,29 @@ def array_of_vars(name, Nx, Ny):
     #xx = xx.reshape(xx.shape[0])
     return xx
 
-def make_symbolic_numpy_array_with_dimension_from_tensor(name,t):
-    a = np.array([[1, 2], [3, 4]])
-    a = np.linspace(0,1,3)
-    for (i, j), value in np.ndenumerate(a):
-        print(i, j, value)
-    # npa = np.zeros_like(t.numpy())
-    # for i,x in enum
+def monkey_tensor(name,torch_tensor):
+   npt = np.zeros_like(torch_tensor.detach().numpy())
+   npt = npt.astype(object)
+
+   if len(torch_tensor.shape) == 2:
+      for (i,j),n in np.ndenumerate(npt):
+           xi =var(name+'_%d%d' % (i,j))
+           npt[i][j] = xi
+
+      return npt
+
+   if len(torch_tensor.shape) == 1:
+      for i,n in enumerate(npt):
+           xi =var(name+'_%d' % (i))
+           npt[i] = xi
+
+      return npt
 
 class SymbolicLinear(nn.Linear):
     def __init__(self,n_in,n_out):
         super(SymbolicLinear,self).__init__(n_in,n_out)
-        sym_weight = array_of_vars('w',n_in,n_out)
-        sym_bias   = array_of_vars('b',n_in,n_out)
+        sym_weight = monkey_tensor('w',self.weight)
+        sym_bias   = monkey_tensor('b',self.bias)
         self.sym_weight = sym_weight
         self.sym_bias   = sym_bias
 
@@ -78,7 +88,7 @@ class SymbolicLinear(nn.Linear):
 
 
 if __name__ == '__main__':
-    make_symbolic_numpy_array_with_dimension_from_tensor('w',torch.ones(3))
+    # make_symbolic_numpy_array_with_dimension_from_tensor('w',torch.ones(3))
 
 
     fc = nn.Linear(1,3)
