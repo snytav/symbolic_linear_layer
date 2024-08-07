@@ -51,7 +51,7 @@ class SymbolicLinear(nn.Linear):
         if len(args) >= 1:
             xx = args[0]
             expr = np.matmul(xx,self.sym_weight.T)
-            self.sym_bias = array_of_vars('b',expr.shape[1],expr.shape[0])
+            #self.sym_bias = array_of_vars('b',expr.shape[1],expr.shape[0])
             expr += self.sym_bias
 
         if len(args) == 2:
@@ -94,10 +94,11 @@ if __name__ == '__main__':
     fc = nn.Linear(1,3)
     sfc = SymbolicLinear(1,3)
 
-    y = fc(torch.ones(1))
-    y1 = sfc(torch.ones(1))
+    x = torch.ones(1)
+    y = fc(x)
+    y1 = sfc(x)
 
-    xx = array_of_vars('x', 1, 1)
+    xx = monkey_tensor('x', x)
 
     s = sfc.symbolicEvaluate(xx,np.ones(1))
 
