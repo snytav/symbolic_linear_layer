@@ -3,6 +3,17 @@ import numpy as np
 import torch.nn as nn
 from sympy import *
 
+
+def substitute_numbers(expr,x,xn):
+    if len(x.shape) == 2:
+        x = x.reshape(x.shape[0]*x.shape[1])
+        xn = xn.reshape(xn.shape[0]*xn.shape[1])
+    s = expr
+    for i,x in enumerate(x):
+        s = s.subs(x,xn[i])
+
+    return s
+
 # Nx - horizontal
 # By - vertical
 def array_of_vars(name, Nx, Ny):
@@ -94,13 +105,15 @@ if __name__ == '__main__':
     fc = nn.Linear(1,3)
     sfc = SymbolicLinear(1,3)
 
-    x = torch.ones(1)
-    y = fc(x)
-    y1 = sfc(x)
+    x = torch.ones((2,2))
+    # y = fc(x)
+    # y1 = sfc(x)
 
     xx = monkey_tensor('x', x)
+    expr  = sin(x_00+x_01+x_11)+x_10
+    s = substitute_numbers(expr,xx,np.ones((2,2)))
 
-    s = sfc.symbolicEvaluate(xx,np.ones(1))
+#    s = sfc.symbolicEvaluate(xx,np.ones(1))
 
 
 
