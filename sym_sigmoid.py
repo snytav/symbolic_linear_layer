@@ -21,9 +21,9 @@ class SymbolicSigmoid(SymbolicLinear):
 
 
 if __name__ == '__main__':
-    xx = array_of_vars('x', 3, 3)
+    xx = array_of_vars('x', 3, 1)
 
-    sig = SymbolicSigmoid(3,3)
+    sig = SymbolicSigmoid(3,1)
 
-    s = sig.symbolicEvaluate(xx,np.ones((3,3)))
+    s = sig.symbolicEvaluate(xx,np.ones((3,1)))
 
