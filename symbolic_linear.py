@@ -105,12 +105,12 @@ if __name__ == '__main__':
     fc = nn.Linear(1,3)
     sfc = SymbolicLinear(1,3)
 
-    x = torch.ones((2,2))
+    x = torch.ones((1,2))
     # y = fc(x)
     # y1 = sfc(x)
 
     xx = monkey_tensor('x', x)
-    expr  = sin(x_00+x_01+x_11)+x_10
+    expr  = sin(x_00+x_01)
     s = substitute_numbers(expr,xx,np.ones((2,2)))
 
 #    s = sfc.symbolicEvaluate(xx,np.ones(1))
