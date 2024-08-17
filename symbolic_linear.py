@@ -14,6 +14,19 @@ def substitute_numbers(expr,x,xn):
 
     return s
 
+def substitute_to_array(expr_arr,x,xn):
+    if len(expr_arr.shape) == 1:
+        for i,expr in enumerate(expr_arr):
+            expr = substitute_numbers(expr,x,xn)
+            expr_arr[i] = expr
+    else:
+        if len(expr_arr.shape) == 2:
+            for (i,j),expr in np.ndenumerate(expr_arr):
+                expr = substitute_numbers(expr, x, xn)
+                expr_arr[i][j] = expr
+
+    return expr_arr
+
 # Nx - horizontal
 # By - vertical
 def array_of_vars(name, Nx, Ny):
@@ -70,18 +83,18 @@ class SymbolicLinear(nn.Linear):
 
 
             #substitute xx values
-            for sx in expr:
-                for i,s in enumerate(sx):
-                    for x,v in zip(xx,xx_vals):
-                        s = s.subs(x[0],v)
+            expr = substitute_to_array(expr,xx,xx_vals)
+            expr = substitute_to_array(expr, self.sym_weight,self.weight)
+            expr = substitute_to_array(expr, self.sym_bias,self.bias)
 
-                    for w,wn in zip(self.sym_weight,self.weight):
-                        s = s.subs(w[0], wn)
-
-                    for w,wn in zip(self.sym_bias,self.bias):
-                        s = s.subs(w[0], wn)
-
-                    sx[i] = s
+            #
+            #         for w,wn in zip(self.sym_weight,self.weight):
+            #             s = s.subs(w[0], wn)
+            #
+            #         for w,wn in zip(self.sym_bias,self.bias):
+            #             s = s.subs(w[0], wn)
+            #
+            #         sx[i] = s
 
 
         return expr
@@ -104,13 +117,16 @@ if __name__ == '__main__':
 
     fc = nn.Linear(1,3)
     sfc = SymbolicLinear(1,3)
+    x = torch.ones(1)
+    xx = monkey_tensor('x', x)
+    s = sfc.symbolicEvaluate(xx, np.ones(1))
 
-    x = torch.ones((1,2))
+    x = torch.ones((1,3))
     # y = fc(x)
     # y1 = sfc(x)
 
-    xx = monkey_tensor('x', x)
-    expr  = sin(x_00+x_01)
+
+    expr  = sin(x_00+x_10)
     s = substitute_numbers(expr,xx,np.ones((2,2)))
 
 #    s = sfc.symbolicEvaluate(xx,np.ones(1))
