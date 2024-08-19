@@ -116,12 +116,13 @@ if __name__ == '__main__':
     # make_symbolic_numpy_array_with_dimension_from_tensor('w',torch.ones(3))
 
 
-    fc = nn.Linear(1,3)
-    sfc = SymbolicLinear(1,3)
-    x = torch.ones(1)
+    fc = nn.Linear(3,3)
+    sfc = SymbolicLinear(3,3)
+    x = torch.ones(3)
     xx = monkey_tensor('x', x)
-    expr,s = sfc.symbolicEvaluate(xx, np.ones(1))
-    sig = Sym
+    expr,s = sfc.symbolicEvaluate(xx, np.ones((3)))
+    from sym_sigmoid import SymbolicSigmoid
+    sig = SymbolicSigmoid(expr)
 
     #x = torch.ones((1,3))
     # y = fc(x)
