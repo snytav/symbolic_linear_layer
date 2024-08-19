@@ -13,7 +13,7 @@ def SymbolicSigmoid(*args):
         if len(fc1.shape) == 2:
 
             sigma_fc1 = sigma_fc1.astype(object)
-            for (i, j), xi in np.ndenumerate(xx):
+            for (i, j), xi in np.ndenumerate(sigma_fc1):
                 sigma_fc1[i][j] = squarer(xi)
 
     return sigma_fc1

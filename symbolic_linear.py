@@ -124,6 +124,9 @@ if __name__ == '__main__':
     from sym_sigmoid import SymbolicSigmoid
     sig = SymbolicSigmoid(expr)
 
+    from sym_diff import symbolic_diff
+    d_sig = symbolic_diff(sig,w_00)
+
     #x = torch.ones((1,3))
     # y = fc(x)
     # y1 = sfc(x)
