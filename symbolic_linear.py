@@ -83,9 +83,10 @@ class SymbolicLinear(nn.Linear):
 
 
             #substitute xx values
-            expr = substitute_to_array(expr,xx,xx_vals)
-            expr = substitute_to_array(expr, self.sym_weight,self.weight)
-            expr = substitute_to_array(expr, self.sym_bias,self.bias)
+            s  = expr.copy()
+            s = substitute_to_array(s,xx,xx_vals)
+            s = substitute_to_array(s, self.sym_weight,self.weight)
+            s = substitute_to_array(s, self.sym_bias,self.bias)
 
             #
             #         for w,wn in zip(self.sym_weight,self.weight):
@@ -97,7 +98,7 @@ class SymbolicLinear(nn.Linear):
             #         sx[i] = s
 
 
-        return expr
+        return expr,s
 
 
 
@@ -119,15 +120,16 @@ if __name__ == '__main__':
     sfc = SymbolicLinear(1,3)
     x = torch.ones(1)
     xx = monkey_tensor('x', x)
-    s = sfc.symbolicEvaluate(xx, np.ones(1))
+    expr,s = sfc.symbolicEvaluate(xx, np.ones(1))
+    sig = Sym
 
-    x = torch.ones((1,3))
+    #x = torch.ones((1,3))
     # y = fc(x)
     # y1 = sfc(x)
 
 
-    expr  = sin(x_00+x_10)
-    s = substitute_numbers(expr,xx,np.ones((2,2)))
+    #expr  = sin(x_00+x_10)
+    # s = substitute_numbers(expr,xx,np.ones((2,2)))
 
 #    s = sfc.symbolicEvaluate(xx,np.ones(1))
 
