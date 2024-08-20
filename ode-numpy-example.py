@@ -20,7 +20,7 @@ from matplotlib import pyplot as plt
 
 
 
-nx = 10
+nx = 3
 dx = 1. / nx
 
 def f(x, psy, dpsy):
@@ -86,10 +86,20 @@ import torch.nn as nn
 #     super(SymNN).__init__()
 
 if __name__ == '__main__':
-    W = [npr.randn(1, 10), npr.randn(10, 1)]
+    W = [npr.randn(1, nx), npr.randn(nx, 1)]
     lmb = 0.001
 
-    y = neural_network(W,np.ones(1))
+    x = np.ones(1)
+    y = neural_network(W,x)
+    y1 = np.dot(x, W[0])
+    from symbolic_linear import SymbolicLinear,monkey_tensor
+    xt = monkey_tensor('x',torch.from_numpy(x))
+    sfc = SymbolicLinear(1,len(W[0][0]))
+    expr,s = sfc.symbolicEvaluate(xt,x)
+    y2 = sigmoid(y1)
+    y3 = np.dot(y2, W[1])
+
+
     dy_dx = neural_network_x(np.ones(1))
 
     for i in range(50):
