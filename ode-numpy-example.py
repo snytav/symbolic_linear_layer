@@ -95,6 +95,7 @@ if __name__ == '__main__':
     from symbolic_linear import SymbolicLinear,monkey_tensor
     xt = monkey_tensor('x',torch.from_numpy(x))
     sfc = SymbolicLinear(1,len(W[0][0]))
+    sfc.substitute_weight_and_biases(W[0][0],np.zeros(3))
     expr,s = sfc.symbolicEvaluate(xt,x)
     y2 = sigmoid(y1)
     y3 = np.dot(y2, W[1])

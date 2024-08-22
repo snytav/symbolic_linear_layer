@@ -71,6 +71,10 @@ class SymbolicLinear(nn.Linear):
         self.sym_weight = sym_weight
         self.sym_bias   = sym_bias
 
+    def substitute_weight_and_biases(self,w,b):
+          self.weight = nn.Parameter(torch.from_numpy(w).reshape(self.weight.shape))
+          self.bias   = nn.Parameter(torch.from_numpy(b).reshape(self.bias.shape))
+
     def symbolicEvaluate(self,*args):
         if len(args) >= 1:
             xx = args[0]
