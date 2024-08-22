@@ -98,6 +98,8 @@ if __name__ == '__main__':
     sfc.substitute_weight_and_biases(W[0][0],np.zeros(3))
     expr,s = sfc.symbolicEvaluate(xt,x)
     y2 = sigmoid(y1)
+    from sym_sigmoid import SymbolicSigmoid
+    y2_sim = SymbolicSigmoid(expr)
     y3 = np.dot(y2, W[1])
 
 
