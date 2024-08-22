@@ -92,7 +92,7 @@ if __name__ == '__main__':
     x = np.ones(1)
     y = neural_network(W,x)
     y1 = np.dot(x, W[0])
-    from symbolic_linear import SymbolicLinear,monkey_tensor
+    from symbolic_linear import SymbolicLinear,monkey_tensor,substitute_all_vars
     xt = monkey_tensor('x',torch.from_numpy(x))
     sfc = SymbolicLinear(1,len(W[0][0]))
     sfc.substitute_weight_and_biases(W[0][0],np.zeros(3))
@@ -100,6 +100,7 @@ if __name__ == '__main__':
     y2 = sigmoid(y1)
     from sym_sigmoid import SymbolicSigmoid
     y2_sim = SymbolicSigmoid(expr)
+    y2_sim_num = substitute_all_vars(y2_sim,[(xt,x)])
     y3 = np.dot(y2, W[1])
 
 

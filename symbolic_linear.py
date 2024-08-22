@@ -110,6 +110,13 @@ class SymbolicLinear(nn.Linear):
 
         return fc1
 
+#var_list must be a list of tuples: (variable,value)
+# expr_arr is an array of expressions
+def substitute_all_vars(expr_arr,var_list):
+
+    for v in var_list:
+        expr_arr = substitute_to_array(expr_arr,v[0],v[1])
+    return expr_arr
 
 
 
