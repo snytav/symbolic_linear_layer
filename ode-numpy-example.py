@@ -100,7 +100,10 @@ if __name__ == '__main__':
     y2 = sigmoid(y1)
     from sym_sigmoid import SymbolicSigmoid
     y2_sim = SymbolicSigmoid(expr)
-    y2_sim_num = substitute_all_vars(y2_sim,[(xt,x)])
+    y2_sim_num = substitute_all_vars(y2_sim,
+                                     [(xt,x),
+                                      (sfc.sym_weight,sfc.weight.detach().numpy()),
+                                      (sfc.sym_bias,sfc.bias.detach().numpy())])
     y3 = np.dot(y2, W[1])
 
 
