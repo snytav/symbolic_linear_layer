@@ -110,6 +110,13 @@ class SymbolicLinear(nn.Linear):
 
         return fc1
 
+    def get_all_vars_and_values(self):
+        res = [(self.sym_weight,self.weight.detach().numpy()),(self.sym_bias,self.bias.detach().numpy())]
+        return res
+    def get_all_vars(self):
+        res = [self.sym_weight,self.sym_bias]
+        return res
+
 #var_list must be a list of tuples: (variable,value)
 # expr_arr is an array of expressions
 def substitute_all_vars(expr_arr_in,var_list):

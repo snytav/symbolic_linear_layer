@@ -107,6 +107,8 @@ if __name__ == '__main__':
     d_y2_d_x_0 = diff_expression_array(y2_sim,xt[0])
     d_y2_sim_d_w = d_scalar_wrt_vector(y2_sim[0],sfc.sym_weight)
     d_y2_sim_d_w = d_vector_wrt_vector(y2_sim, sfc.sym_weight)
+    var_list = sfc.get_all_vars_and_values()
+    var_list.append((xt,x))
     y2_sim_num = substitute_all_vars(y2_sim,
                                      [(xt,x),
                                       (sfc.sym_weight,sfc.weight.detach().numpy()),
