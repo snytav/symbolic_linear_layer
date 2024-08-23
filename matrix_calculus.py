@@ -2,7 +2,8 @@ from sympy import *
 import numpy as np
 
 
-def diff_expression_array(expr_arr,x):
+def diff_expression_array(expr_arr_in,x):
+    expr_arr = expr_arr_in.copy()
     if len(expr_arr.shape) == 1:
         for i,expr in enumerate(expr_arr):
             expr_arr[i] = diff(expr,x)
