@@ -100,6 +100,9 @@ if __name__ == '__main__':
     y2 = sigmoid(y1)
     from sym_sigmoid import SymbolicSigmoid
     y2_sim = SymbolicSigmoid(expr)
+
+    from matrix_calculus import diff_expression_array
+    d_y2_d_x_0 = diff_expression_array(y2_sim,xt[0])
     y2_sim_num = substitute_all_vars(y2_sim,
                                      [(xt,x),
                                       (sfc.sym_weight,sfc.weight.detach().numpy()),
