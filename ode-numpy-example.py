@@ -101,9 +101,10 @@ if __name__ == '__main__':
     from sym_sigmoid import SymbolicSigmoid
     y2_sim = SymbolicSigmoid(expr)
 
-    from matrix_calculus import diff_expression_array,d_scalar_wrt_vector
+    from matrix_calculus import diff_expression_array,d_scalar_wrt_vector,d_vector_wrt_vector
     d_y2_d_x_0 = diff_expression_array(y2_sim,xt[0])
     d_y2_sim_d_w = d_scalar_wrt_vector(y2_sim[0],sfc.sym_weight)
+    d_y2_sim_d_w = d_vector_wrt_vector(y2_sim, sfc.sym_weight)
     y2_sim_num = substitute_all_vars(y2_sim,
                                      [(xt,x),
                                       (sfc.sym_weight,sfc.weight.detach().numpy()),

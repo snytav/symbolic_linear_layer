@@ -18,3 +18,11 @@ def d_scalar_wrt_vector(s,vec):
     for i,v in enumerate(vec):
         res[i] = diff(s,v[0])
     return res
+
+def d_vector_wrt_vector(vy,vx):
+    res = np.zeros((vy.shape[0],vx.shape[0]),dtype=object)
+
+    for i,y in enumerate(vy):
+        res[i,:] = d_scalar_wrt_vector(y,vx)
+
+    return res
