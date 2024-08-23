@@ -18,7 +18,9 @@ from matplotlib import pyplot as plt
 # Commented out IPython magic to ensure Python compatibility.
 # %cd symbolic_linear_layer/
 
-
+#TODO: 1. function to collect all variables from layer with or without values
+#      2. add 2nd layer and check numpy derivative
+#      3. Unite all this to a Model (Symbolic model) class with list of functions or layers in a chain
 
 nx = 3
 dx = 1. / nx
