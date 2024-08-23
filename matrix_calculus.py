@@ -11,3 +11,10 @@ def diff_expression_array(expr_arr,x):
                 for (i,j),expr in np.ndenumerate(expr_arr):
                     expr_arr[i][j] = diff(expr, x)
     return expr_arr
+
+def d_scalar_wrt_vector(s,vec):
+    res = np.zeros(vec.shape[0],dtype=object)
+
+    for i,v in enumerate(vec):
+        res[i] = diff(s,v[0])
+    return res
