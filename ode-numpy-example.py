@@ -102,6 +102,9 @@ if __name__ == '__main__':
     y2 = sigmoid(y1)
     from sym_sigmoid import SymbolicSigmoid
     y2_sim = SymbolicSigmoid(expr)
+    var_list = sfc.get_all_vars_and_values()
+    var_list.append((xt, np.ones(1)))
+    y2_sim_subs = substitute_all_vars(y2_sim,var_list)
 
     from matrix_calculus import diff_expression_array,d_scalar_wrt_vector,d_vector_wrt_vector
     d_y2_d_x_0 = diff_expression_array(y2_sim,xt[0])
