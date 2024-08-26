@@ -64,10 +64,10 @@ def monkey_tensor(name,torch_tensor):
       return npt
 
 class SymbolicLinear(nn.Linear):
-    def __init__(self,n_in,n_out):
+    def __init__(self,n_in,n_out,layer_number):
         super(SymbolicLinear,self).__init__(n_in,n_out)
-        sym_weight = monkey_tensor('w',self.weight)
-        sym_bias   = monkey_tensor('b',self.bias)
+        sym_weight = monkey_tensor('w_'+str(layer_number),self.weight)
+        sym_bias   = monkey_tensor('b_'+str(layer_number),self.bias)
         self.sym_weight = sym_weight
         self.sym_bias   = sym_bias
 
@@ -75,34 +75,11 @@ class SymbolicLinear(nn.Linear):
           self.weight = nn.Parameter(torch.from_numpy(w).reshape(self.weight.shape))
           self.bias   = nn.Parameter(torch.from_numpy(b).reshape(self.bias.shape))
 
-    def symbolicEvaluate(self,*args):
-        if len(args) >= 1:
-            xx = args[0]
-            expr = np.matmul(xx,self.sym_weight.T)
+    def symbolicEvaluate(self,xx):
+        expr = np.matmul(xx, self.sym_weight.T)
             #self.sym_bias = array_of_vars('b',expr.shape[1],expr.shape[0])
-            expr += self.sym_bias
-
-        if len(args) == 2:
-            xx_vals = args[1]
-
-
-            #substitute xx values
-            s  = expr.copy()
-            s = substitute_to_array(s,xx,xx_vals)
-            s = substitute_to_array(s, self.sym_weight,self.weight)
-            s = substitute_to_array(s, self.sym_bias,self.bias)
-
-            #
-            #         for w,wn in zip(self.sym_weight,self.weight):
-            #             s = s.subs(w[0], wn)
-            #
-            #         for w,wn in zip(self.sym_bias,self.bias):
-            #             s = s.subs(w[0], wn)
-            #
-            #         sx[i] = s
-
-
-        return expr,s
+        expr += self.sym_bias
+        return expr
 
 
 

@@ -18,7 +18,7 @@ from matplotlib import pyplot as plt
 # Commented out IPython magic to ensure Python compatibility.
 # %cd symbolic_linear_layer/
 
-#TODO: 1. function to collect all variables from layer with or without values
+#TODO: 1.
 #      2. add 2nd layer and check numpy derivative
 #      3. Unite all this to a Model (Symbolic model) class with list of functions or layers in a chain
 
@@ -96,15 +96,20 @@ if __name__ == '__main__':
     y1 = np.dot(x, W[0])
     from symbolic_linear import SymbolicLinear,monkey_tensor,substitute_all_vars
     xt = monkey_tensor('x',torch.from_numpy(x))
-    sfc = SymbolicLinear(1,len(W[0][0]))
+    sfc = SymbolicLinear(1,len(W[0][0]),0)
+    sfc2 = SymbolicLinear(len(W[0][0]),1)
     sfc.substitute_weight_and_biases(W[0][0],np.zeros(3))
-    expr,s = sfc.symbolicEvaluate(xt,x)
+    expr = sfc.symbolicEvaluate(xt)
     y2 = sigmoid(y1)
     from sym_sigmoid import SymbolicSigmoid
     y2_sim = SymbolicSigmoid(expr)
     var_list = sfc.get_all_vars_and_values()
     var_list.append((xt, np.ones(1)))
     y2_sim_subs = substitute_all_vars(y2_sim,var_list)
+
+    #2nd layer
+    expr2 = sfc2.symbolicEvaluate(y2_sim)
+
 
     from matrix_calculus import diff_expression_array,d_scalar_wrt_vector,d_vector_wrt_vector
     d_y2_d_x_0 = diff_expression_array(y2_sim,xt[0])
