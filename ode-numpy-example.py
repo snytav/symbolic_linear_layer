@@ -18,9 +18,9 @@ from matplotlib import pyplot as plt
 # Commented out IPython magic to ensure Python compatibility.
 # %cd symbolic_linear_layer/
 
-#TODO: 1.
-#      2. add 2nd layer and check numpy derivative
-#      3. Unite all this to a Model (Symbolic model) class with list of functions or layers in a chain
+#TODO: 1. substitute values for 2nd layer
+#      2. define what derivative is needed to compare with Numpy
+#      3. compute all te necessary derivatives
 
 nx = 3
 dx = 1. / nx
@@ -97,7 +97,7 @@ if __name__ == '__main__':
     from symbolic_linear import SymbolicLinear,monkey_tensor,substitute_all_vars
     xt = monkey_tensor('x',torch.from_numpy(x))
     sfc = SymbolicLinear(1,len(W[0][0]),0)
-    sfc2 = SymbolicLinear(len(W[0][0]),1)
+    sfc2 = SymbolicLinear(len(W[0][0]),1,1)
     sfc.substitute_weight_and_biases(W[0][0],np.zeros(3))
     expr = sfc.symbolicEvaluate(xt)
     y2 = sigmoid(y1)
@@ -109,6 +109,16 @@ if __name__ == '__main__':
 
     #2nd layer
     expr2 = sfc2.symbolicEvaluate(y2_sim)
+    sfc2.substitute_weight_and_biases(W[1], np.zeros(1))
+
+    #substitute all values
+    var_list = sfc.get_all_vars_and_values()
+    var_list2 = sfc2.get_all_vars_and_values()
+    var_list = var_list+var_list2
+    var_list.append((xt, np.ones(1)))
+    expr2_num = substitute_all_vars(expr2,var_list)
+
+
 
 
     from matrix_calculus import diff_expression_array,d_scalar_wrt_vector,d_vector_wrt_vector
